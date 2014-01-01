@@ -20,4 +20,8 @@ $(document).ready(function(){
     var aspectRatio = {X: 16, Y: 9};
     resizeVideo($('#video'), aspectRatio.X, aspectRatio.Y);
 
+    $(window).resize(function(){
+        resizeVideo($('#video'), aspectRatio.X, aspectRatio.Y);
+    });
+
 });
