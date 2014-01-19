@@ -26,10 +26,9 @@ $(document).ready(function(){
 
     $video.on('ended', videoSequence.next($video, scenes));
 
-    videoSequence.queue.push('playNextVideo');
-    videoSequence.queue.push('playNextVideo');
-    videoSequence.queue.push('playNextVideo');
-    videoSequence.queue.push('playNextVideo');
+    for (var i=0; i < scenes.length; i++) {
+        videoSequence.queue.push('playNextVideo');
+    }
 
     $video.trigger('ended');
 
