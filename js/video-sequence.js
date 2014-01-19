@@ -25,7 +25,7 @@ videoSequence = (function(){
             }
             return function() {
                 if (this.queue.length > 0) {
-                    var f = queue.shift();
+                    var f = this.queue.shift();
                     if ('playRandomVideo' == f) {
                         videoSequence[f]($video, scenes, this.scene);
                     }

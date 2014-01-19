@@ -1,14 +1,5 @@
 $(document).ready(function(){
 
-    var $video = $('#video');
-    var aspectRatio = {X: 16, Y: 9};
-
-    videoSequence.resizeVideo($video, aspectRatio.X, aspectRatio.Y);
-
-    $(window).resize(function(){
-        videoSequence.resizeVideo($video, aspectRatio.X, aspectRatio.Y);
-    });
-
     var scenes = [
         [
             'MVI_9027',
@@ -37,12 +28,22 @@ $(document).ready(function(){
         ]
     ];
 
+    var $video = $('#video');
+
+    var aspectRatio = {X: 16, Y: 9};
+
+    videoSequence.resizeVideo($video, aspectRatio.X, aspectRatio.Y);
+
+    $(window).resize(function(){
+        videoSequence.resizeVideo($video, aspectRatio.X, aspectRatio.Y);
+    });
+
     $video.on('ended', videoSequence.next($video, scenes, chains));
 
     videoSequence.queue.push('playRandomVideo');
     videoSequence.queue.push('playRandomVideo');
     videoSequence.queue.push('playChainedVideo');
 
-    $video.play();
+    $video.get(0).play();
 
 });
