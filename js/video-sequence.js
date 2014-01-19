@@ -24,16 +24,32 @@ videoSequence = (function(){
                 var chains = [];
             }
             return function() {
-                if (this.queue.length > 0) {
-                    var f = this.queue.shift();
+                if (videoSequence.queue.length > 0) {
+                    var f = videoSequence.queue.shift();
                     if ('playRandomVideo' == f) {
                         videoSequence[f]($video, scenes, this.scene);
                     }
                     else if('playChainedVideo' == f) {
                         videoSequence[f]($video, scenes, this.scene, chains);
                     }
+                    else if ('playNextVideo' == f) {
+                        videoSequence[f]($video, scenes, this.scene);
+                    }
                 }
             }
+        },
+
+        /**
+         * @param $video        Required    JQuery video element
+         * @param scenes        Required
+         */
+        playNextVideo: function($video, scenes) {
+            var currentIndex = this.scene;
+            if (currentIndex >= scenes.length) {
+                console.log('No more videos, all done!');
+                return;
+            }
+            this.switchVideo($video, scenes, this.scene, 0);
         },
 
         /**
@@ -54,6 +70,20 @@ videoSequence = (function(){
 
             var videoCriteria = this.getRandomInt(0, scenes[sceneCriteria].length - 1);
             this.switchVideo($video, scenes, sceneCriteria, videoCriteria);
+        },
+
+        /**
+         * @param   list    Required    Array
+         * @return  Array
+         */
+        randomizeListOrder: function(list) {
+            for (var i = list.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = list[i];
+                list[i] = list[j];
+                list[j] = temp;
+            }
+            return list;
         },
 
         /**
@@ -85,9 +115,11 @@ videoSequence = (function(){
             var webmFilename = ''; // todo
             $video.find('#mp4-source').attr('src', mp4Filename);
             $video.find('#webm-source').attr('src', webmFilename); // todo
-            $video.load();
+            $video.get(0).load();
             this.sequence.push([sceneCriteria, videoCriteria]);
             this.playing = [sceneCriteria, videoCriteria];
+            console.log('scene '+this.scene);
+            $video.get(0).play();
             this.scene = this.scene + 1;
         },
 

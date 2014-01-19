@@ -1,33 +1,5 @@
 $(document).ready(function(){
 
-    var scenes = [
-        [
-            'MVI_9027',
-            'MVI_9028',
-            'MVI_9029'
-        ],
-        [
-            'MVI_9038',
-            'MVI_9041',
-            'MVI_9043'
-        ],
-        [
-            'MVI_9044',
-            'MVI_9047',
-            'MVI_9054'
-        ]
-    ];
-
-    var chains = [
-        null,
-        null,
-        [
-            [0, 0],
-            [0, 1],
-            [0, 2]
-        ]
-    ];
-
     var $video = $('#video');
 
     var aspectRatio = {X: 16, Y: 9};
@@ -38,12 +10,27 @@ $(document).ready(function(){
         videoSequence.resizeVideo($video, aspectRatio.X, aspectRatio.Y);
     });
 
-    $video.on('ended', videoSequence.next($video, scenes, chains));
+    var randomScenes = videoSequence.randomizeListOrder([
+        '8e7a',
+        '67e6',
+        'ccdf',
+        'dec3'
+    ]);
 
-    videoSequence.queue.push('playRandomVideo');
-    videoSequence.queue.push('playRandomVideo');
-    videoSequence.queue.push('playChainedVideo');
+    var scenes = [];
+    for (i in randomScenes) {
+        scenes.push([randomScenes[i]]);
+    }
 
-    $video.get(0).play();
+    console.log(scenes);
+
+    $video.on('ended', videoSequence.next($video, scenes));
+
+    videoSequence.queue.push('playNextVideo');
+    videoSequence.queue.push('playNextVideo');
+    videoSequence.queue.push('playNextVideo');
+    videoSequence.queue.push('playNextVideo');
+
+    $video.trigger('ended');
 
 });
